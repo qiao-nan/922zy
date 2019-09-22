@@ -1,4 +1,4 @@
-package com.example.rascal.lx03b;
+package com.example.rascal.lx03c;
 
 import org.junit.Test;
 

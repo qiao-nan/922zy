@@ -1,10 +1,12 @@
-package com.example.rascal.lx03b.medol;
+package com.example.rascal.lx03c.medol;
 
 import android.util.Log;
 
-import com.example.rascal.lx03b.ApiService;
-import com.example.rascal.lx03b.beans.Bean_girl;
-import com.example.rascal.lx03b.callbacks.Netcallback;
+import com.example.rascal.lx03c.ApiService;
+import com.example.rascal.lx03c.bean.Bean2;
+import com.example.rascal.lx03c.bean.Bean_list;
+import com.example.rascal.lx03c.callback.Netcallback;
+import com.example.rascal.lx03c.callback.Netcallback2;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -19,34 +21,33 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Rascal on 2019/9/22.
  */
 
-public class NetModel {
-    //网络请求
-    public void getDatas(final Netcallback netcallback) {
+public class NetMedol {
+    public void getDatas(final Netcallback netcallback){
+        //网络请求
         Retrofit retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(ApiService.BaseURL)
                 .build();
         ApiService apiService = retrofit.create(ApiService.class);
-        Observable<Bean_girl> json = apiService.getJson();
-        json.subscribeOn(Schedulers.io())
+        Observable<Bean_list> list = apiService.getList();
+        list.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Bean_girl>() {
+                .subscribe(new Observer<Bean_list>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Bean_girl bean_girl) {
-                        netcallback.onSuccess(bean_girl.getResults());
-                        Log.i("111", "onNext: 请求成功" + bean_girl.getResults().toString());
+                    public void onNext(Bean_list bean_list) {
+                        netcallback.onSuccess(bean_list.getBody().getResult());
+                        Log.i("111", "onNext: 请求成功"+bean_list.getBody().getResult().toString());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        netcallback.onFail("请求失败" + e.getMessage());
-                        Log.e("111", "onError: " + e.getMessage());
+                        Log.e("111", "onError: 请求失败"+e.getMessage());
                     }
 
                     @Override
@@ -54,6 +55,7 @@ public class NetModel {
 
                     }
                 });
-
     }
+
+
 }

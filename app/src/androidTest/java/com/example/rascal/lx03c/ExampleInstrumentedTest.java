@@ -1,4 +1,4 @@
-package com.example.rascal.lx03b;
+package com.example.rascal.lx03c;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.rascal.lx03b", appContext.getPackageName());
+        assertEquals("com.example.rascal.lx03c", appContext.getPackageName());
     }
 }
