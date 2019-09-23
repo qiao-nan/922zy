@@ -3,16 +3,18 @@ package com.example.rascal.lx03c;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.rascal.lx03c.adapter.Adapter_ViewPager;
 import com.example.rascal.lx03c.bean.Bean2;
 import com.example.rascal.lx03c.bean.Bean_list;
 import com.example.rascal.lx03c.persenter.NetPersenter2;
@@ -21,7 +23,7 @@ import com.example.rascal.lx03c.view.NetView2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main2Activity extends AppCompatActivity implements NetView2{
+public class Main2Activity extends AppCompatActivity implements NetView2 {
 
     private Toolbar mToolbar;
     private ImageView mIvItem;
@@ -36,12 +38,12 @@ public class Main2Activity extends AppCompatActivity implements NetView2{
     /**
      * 关注
      */
-    private Button mBt;
     private TabLayout mTab;
-    private TextView mTvContent;
     private NetPersenter2 mNetPersenter2;
     private int mPosition;
     private ArrayList<Bean_list.BodyBean.ResultBean> mList;
+    private ViewPager mViewPager;
+    private Adapter_ViewPager mAdapter_viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,8 @@ public class Main2Activity extends AppCompatActivity implements NetView2{
         mIvItem = (ImageView) findViewById(R.id.iv_item);
         mTv1 = (TextView) findViewById(R.id.tv1);
         mTv2 = (TextView) findViewById(R.id.tv2);
-        mBt = (Button) findViewById(R.id.bt);
         mTab = (TabLayout) findViewById(R.id.tab);
-        mTvContent = (TextView) findViewById(R.id.tv_content);
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         mToolbar.setTitle("名师");
         mToolbar.setTitleMarginStart(305);
@@ -81,9 +82,18 @@ public class Main2Activity extends AppCompatActivity implements NetView2{
 
     @Override
     public void addDatas(List<Bean2.BodyBean.ResultBean> resultBeans) {
+        ArrayList<View> views = new ArrayList<>();
+        ArrayList<String> titles = new ArrayList<>();
+        mTab.setupWithViewPager(mViewPager);
         for (int i = 0; i < resultBeans.size(); i++) {
-            mTab.addTab(mTab.newTab().setText(resultBeans.get(i).getDescription()));
+            titles.add(resultBeans.get(i).getDescription());
+            View inflate = LayoutInflater.from(this).inflate(R.layout.layout_vp, null);
+            TextView tv_vp = inflate.findViewById(R.id.tv_vp);
+            tv_vp.setText("GitHub是一个用于版本控制和协作的代码托管平台。它可以让你和其他人在任何地方一起完成项目。本教程将向您介绍GitHub的基本要素，如存储库、分支、提交和拉请求。您将创建自己的Hello World存储库，并学习GitHub的Pull Request工作流，这是一种创建和检查代码的流行方法。"+i);
+            views.add(inflate);
         }
+        mAdapter_viewPager = new Adapter_ViewPager(views,titles);
+        mViewPager.setAdapter(mAdapter_viewPager);
 
     }
 
